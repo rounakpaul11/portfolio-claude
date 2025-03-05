@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe's Portfolio - Welcome!</title>
+    <style>
+        /* Windows XP inspired styles */
+        body {
+            font-family: "Tahoma", "Arial", sans-serif;
+            background-color: #ECE9D8;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 2h96v96H2z' fill='%23ECE9D8' fill-opacity='1'/%3E%3C/svg%3E");
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1E3E89;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .loading-logo {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-family: "Times New Roman", serif;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .loading-bar-container {
+            width: 300px;
+            height: 20px;
+            background-color: #BBB;
+            border: 2px solid #FFF;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #58AA02, #67C326);
+            animation: loading 4s forwards;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            20% { width: 20%; }
+            40% { width: 38%; }
+            50% { width: 52%; }
+            60% { width: 64%; }
+            80% { width: 76%; }
+            90% { width: 90%; }
+            100% { width: 100%; }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            margin-top: 10px;
+            font-family: "MS Sans Serif", sans-serif;
+        }
+
+        .win-logo {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .win-square {
+            width: 40px;
+            height: 40px;
+            margin: 2px;
+        }
+
+        .win-red { background-color: #F65314; }
+        .win-green { background-color: #7CBB00; }
+        .win-blue { background-color: #00A1F1; }
+        .win-yellow { background-color: #FFBB00; }
+
+        .loading-copyright {
+            position: absolute;
+            bottom: 20px;
+            font-size: 12px;
+            color: #DDD;
+        }
+
+        /* Hide main content during loading */
+        .main-content {
+            display: none;
+        }
+
+        /* Main Content Styles */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 10px auto;
+            border: 2px solid #919B9C;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .window {
+            border: 1px solid #0055EA;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .window-header {
+            background: linear-gradient(to right, #0A246A, #3A6EA5);
+            color: white;
+            padding: 5px 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .window-title {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .window-icon {
+            min-width: 16px;
+            height: 16px;
+            background-color: #fff;
+            border-radius: 2px;
+            margin-right: 5px;
+            flex-shrink: 0;
+        }
+
+        .window-controls {
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        .window-button {
+            width: 16px;
+            height: 16px;
+            margin-left: 2px;
+            background-color: #D4D0C8;
+            border: 1px solid #919B9C;
+            text-align: center;
+            line-height: 14px;
+            font-size: 12px;
+            cursor: default;
+        }
+
+        .window-content {
+            background-color: #FFFFFF;
+            padding: 10px 15px;
+            border: 1px solid #919B9C;
+        }
+
+        .navigation {
+            display: flex;
+            background-color: #D4D0C8;
+            border-bottom: 1px solid #919B9C;
+            padding: 5px;
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 2px 8px;
+            margin: 2px;
+            border: 1px solid #919B9C;
+            background-color: #ECE9D8;
+            cursor: default;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .nav-button:hover {
+            background-color: #FFF8DC;
+        }
+
+        .nav-button.active {
+            background-color: #FFF8DC;
+            border-bottom: 1px solid #FFF8DC;
+        }
+
+        .address-bar {
+            background-color: #FFFFFF;
+            border: 1px solid #919B9C;
+            padding: 3px 5px;
+            margin: 5px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .address-text {
+            color: #0000FF;
+            text-decoration: underline;
+            margin-left: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background-color: #D4D0C8;
+            border-top: 1px solid #919B9C;
+            padding: 3px 10px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Content Styles */
+        h1, h2, h3 {
+            color: #003399;
+            border-bottom: 1px solid #D4D0C8;
+            padding-bottom: 5px;
+        }
+
+        a {
+            color: #0000FF;
+            text-decoration: underline;
+        }
+
+        a:visited {
+            color: #800080;
+        }
+
+        a:hover {
+            color: #FF0000;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .profile {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        .profile-image {
+            border: 1px solid #919B9C;
+            padding: 3px;
+            background-color: #FFFFFF;
+            margin: 0 0 15px 0;
+            max-width: 150px;
+            height: auto;
+            border-radius: 100%;
+        }
+
+        @media (min-width: 600px) {
+            .profile-image {
+                margin: 0 15px 0 0;
+            }
+        }
+
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .skills-table td, .skills-table th {
+            border: 1px solid #D4D0C8;
+            padding: 5px 10px;
+        }
+
+        .skills-table th {
+            background-color: #ECE9D8;
+            text-align: left;
+        }
+
+        .skill-bar {
+            height: 15px;
+            background-color: #ECE9D8;
+            border: 1px solid #919B9C;
+            position: relative;
+        }
+
+        .skill-level {
+            height: 100%;
+            background: linear-gradient(to right, #0A246A, #3A6EA5);
+        }
+
+        .experience {
+            margin-top: 20px;
+        }
+
+        .job {
+            border: 1px solid #D4D0C8;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #FAFAFA;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .job-title {
+            font-weight: bold;
+            color: #003399;
+            margin: 0;
+        }
+
+        .job-date {
+            color: #666666;
+        }
+
+        .job-company {
+            font-style: italic;
+            margin: 5px 0;
+        }
+
+        .job-description {
+            margin-top: 10px;
+        }
+
+        .job-description ul {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+
+        .guestbook {
+            background-color: #FFFFCC;
+            border: 1px solid #FFCC66;
+            padding: 10px;
+            margin-top: 15px;
+        }
+
+        .guestbook-entry {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #FFCC66;
+        }
+
+        .counter {
+            text-align: center;
+            margin: 15px 0;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+        }
+
+        .counter-box {
+            display: inline-block;
+            background-color: #000000;
+            color: #00FF00;
+            padding: 2px 5px;
+            margin: 0 2px;
+        }
+
+        .best-viewed {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 11px;
+        }
+
+        .best-viewed img {
+            height: 31px;
+            margin: 0 5px;
+            max-width: 88px;
+        }
+
+        .construction {
+            text-align: center;
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .construction img {
+            height: 40px;
+            margin: 0 5px;
+        }
+
+        .construction span {
+            margin: 0 5px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #D4D0C8;
+            margin: 15px 0;
+        }
+
+        .blink {
+            animation: blink-animation 1s steps(5, start) infinite;
+        }
+
+        @keyframes blink-animation {
+            to {
+                visibility: hidden;
+            }
+        }
+
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            background-color: #FFFFCC;
+            border: 1px solid #FFCC66;
+            padding: 5px;
+        }
+
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* New 2000s styles */
+        .flame-text {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='30' viewBox='0 0 100 30'%3E%3Cpath d='M0,0 L100,0 L100,30 L0,30 Z' fill='%23FF0000'/%3E%3C/svg%3E");
+            color: yellow;
+            font-weight: bold;
+            padding: 5px 10px;
+            text-align: center;
+            margin: 10px 0;
+            border: 1px solid black;
+        }
+
+        .hit-counter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+
+        .hit-counter-label {
+            margin-right: 10px;
+        }
+
+        .awards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            border: 1px dashed #919B9C;
+            padding: 10px;
+            background-color: #F5F5F5;
+        }
+
+        .award-item {
+            border: 1px solid #D4D0C8;
+            width: 88px;
+            height: 31px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            font-size: 9px;
+            text-align: center;
+            color: #003399;
+            font-weight: bold;
+        }
+
+        .geocities-banner {
+            text-align: center;
+            margin: 15px 0;
+            padding: 3px;
+            background-color: #FFFF99;
+            border: 2px solid #FFCC00;
+            font-weight: bold;
+            font-family: "Comic Sans MS", cursive;
+            color: #FF3300;
+        }
+
+        .webring {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .webring-button {
+            margin: 0 5px;
+            border: 1px solid #919B9C;
+            padding: 2px 8px;
+            background-color: #D4D0C8;
+            font-size: 12px;
+        }
+
+        .midi-control {
+            text-align: center;
+            margin: 15px 0;
+            padding: 5px;
+            background-color: #D4D0C8;
+            border: 1px solid #919B9C;
+        }
+
+        .gradient-heading {
+            background: linear-gradient(to right, #FF0000, #FFFF00, #00FF00, #00FFFF, #0000FF, #FF00FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 5px 0;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+        }
+
+        /* Additional responsive rules */
+        @media (max-width: 480px) {
+            .container {
+                margin: 0;
+                border-width: 0;
+            }
+            
+            .window {
+                margin-bottom: 0;
+            }
+            
+            .window-content {
+                padding: 8px;
+            }
+            
+            .counter-box {
+                padding: 2px 3px;
+                margin: 0 1px;
+            }
+            
+            .best-viewed img {
+                height: 25px;
+                margin: 3px;
+            }
+            
+            .window-title {
+                font-size: 12px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+            
+            .loading-bar-container {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-logo">Rounak Paul's Portfolio</div>
+        <div class="win-logo">
+            <div class="win-square win-red"></div>
+            <div class="win-square win-green"></div>
+            <div class="win-square win-blue"></div>
+            <div class="win-square win-yellow"></div>
+        </div>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+        <div class="loading-text">Loading... Please wait</div>
+        <div class="loading-text blink">Do not turn off your computer</div>
+        <div class="loading-copyright">© Microsoft Corporation 2003</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Main Window -->
+            <div class="window">
+                <div class="window-header">
+                    <div class="window-title">
+                        <div class="window-icon"></div>
+                        <span>Portfolio - Rounak Paul - Internet Explorer</span>
+                    </div>
+                    <div class="window-controls">
+                        <div class="window-button">_</div>
+                        <div class="window-button">□</div>
+                        <div class="window-button">X</div>
+                    </div>
+                </div>
+                
+                <div class="navigation">
+                    <div class="nav-button">File</div>
+                    <div class="nav-button">Edit</div>
+                    <div class="nav-button">View</div>
+                    <div class="nav-button">Favorites</div>
+                    <div class="nav-button">Tools</div>
+                    <div class="nav-button">Help</div>
+                </div>
+                
+                <div class="navigation">
+                    <div class="nav-button">Back</div>
+                    <div class="nav-button">Forward</div>
+                    <div class="nav-button">Stop</div>
+                    <div class="nav-button">Refresh</div>
+                    <div class="nav-button">Home</div>
+                </div>
+                
+                <div class="address-bar">
+                    Address: <span class="address-text">http://www.Rounak-Paul.com/index.html</span>
+                </div>
+                
+                <div class="window-content">
+                    <div class="midi-control">
+                        ♫ Background Music: 
+                        <a href="#">[Play]</a> 
+                        <a href="#">[Stop]</a> 
+                        <a href="#">[Loop]</a>
+                    </div>
+                
+                    <div class="geocities-banner">
+                        Welcome to my Portfolio Peeps!
+                    </div>
+                
+                    <div class="marquee">
+                        <span>Welcome to my portfolio website! Thanks for visiting! Check out my experience and skills below! Last updated: 02/15/2003</span>
+                    </div>
+                    
+                    <div class="construction">
+                        <img src="pic1.jpg" alt="Under Construction">
+                        <span class="blink">Welcome to my personal portfolio website!</span>
+                        <img src="pic1.jpg" alt="Under Construction">
+                    </div>
+                    
+                    <h1 class="gradient-heading">Rounak Paul's Portfolio</h1>
+                    
+                    <div class="profile">
+                        <img class="profile-image" src="profile-ghibli1.jpg" alt="John Doe" width="150" height="150">
+                        <div>
+                            <h2>Rounak Paul</h2>
+                            <p>Web Developer &amp; Software Engineer</p>
+                            <p>Welcome to my personal website! I'm a passionate developer with expertise in React, .NET, and web technologies. I build modern web applications that help businesses succeed in the digital world.</p>
+                            <p>Email: <a href="mailto:paulrounak999@gmail.com">paulrounak999@gmail.com</a></p>
+                            <p>Location: Hyderabad, Telangana, India</p>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="section">
+                        <h2>My Skills</h2>
+                        <div class="flame-text">Hot Skills For Today's Market!</div>
+                        <table class="skills-table">
+                            <tr>
+                                <th>Skill</th>
+                                <th>Proficiency</th>
+                            </tr>
+                            <tr>
+                                <td>React</td>
+                                <td>
+                                    <div class="skill-bar">
+                                        <div class="skill-level" style="width: 81%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>HTML</td>
+                                <td>
+                                    <div class="skill-bar">
+                                        <div class="skill-level" style="width: 89%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CSS</td>
+                                <td>
+                                    <div class="skill-bar">
+                                        <div class="skill-level" style="width: 83%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>.NET</td>
+                                <td>
+                                    <div class="skill-bar">
+                                        <div class="skill-level" style="width: 85%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C#</td>
+                                <td>
+                                    <div class="skill-bar">
+                                        <div class="skill-level" style="width: 90%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Git</td>
+                                <td>
+                                    <div class="skill-bar">
+                                        <div class="skill-level" style="width: 75%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript</td>
+                                <td>
+                                    <div class="skill-bar">
+                                        <div class="skill-level" style="width: 80%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="section">
+                        <h2>Work Experience</h2>
+                        
+                        <div class="experience">
+                            <div class="job">
+                                <div class="job-header">
+                                    <h3 class="job-title">Associate Technical Consultant</h3>
+                                    <div class="job-date">2024 - present</div>
+                                </div>
+                                <div class="job-company">Value-Creed</div>
+                                <div class="job-description">
+                                    <p>Full stack developer using React(Frontend) and .NET(backend)</p>
+                                    <ul>
+                                        <li>Developed front-end components using HTML, CSS, JavaScript and React</li>
+                                        <li>Implemented Backedn API features using C# and .NET Framework</li>
+                                        <li>Fixed bugs and improved existing codebases</li>
+                                        <li>Participated in code reviews and team meetings</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="section">
+                        <h2>Contact Me</h2>
+                        <p>Feel free to contact me for any web development needs or questions!</p>
+                        <ul>
+                            <li>Email: <a href="mailto:paulrounak999@gmail.com">paulrounak999@gmail.com</a></li>
+                            <li>Linkedin <a href="https://www.linkedin.com/in/rounakk11/">rounakpaul11</a></li>
+                            <li>Phone: (91) 8822955038</li>
+                            <li>ICQ: 123456789</li>
+                            <li>AIM: johndoe2000</li>
+                            <li>MSN Messenger: paulrounak999@gmail.com</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="awards">
+                        <div class="award-item">Cool Site of the Day</div>
+                        <div class="award-item">Netscape Now!</div>
+                        <div class="award-item">Hot Pick 2003</div>
+                        <div class="award-item">HTML 3.0 Compliant</div>
+                    </div>
+                    
+                    <div class="webring">
+                        <div class="webring-button">« Previous</div>
+                        <div class="webring-button">Web Ring</div>
+                        <div class="webring-button">Next »</div>
+                    </div>
+                    
+                    <div class="guestbook">
+                        <h3>Guestbook</h3>
+                        <div class="guestbook-entry">
+                            <p><strong>Jane Smith</strong> (jane@example.com) wrote on 02/15/2003:</p>
+                            <p>Great website! Love the design and your experience is impressive!</p>
+                        </div>
+                        <div class="guestbook-entry">
+                            <p><strong>Bob Johnson</strong> (bob@example.com) wrote on 01/20/2003:</p>
+                            <p>I'm impressed with your skills. Would love to collaborate sometime!</p>
+                        </div>
+                        <div class="guestbook-entry">
+                            <p><strong>Alice Williams</strong> (alice@example.com) wrote on 12/12/2002:</p>
+                            <p>Just discovered your website. Your portfolio is awesome!</p>
+                        </div>
+                        <p><a href="#">Sign my guestbook</a> | <a href="#">View all entries</a></p>
+                    </div>
+                    
+                    <div class="hit-counter">
+                        <div class="hit-counter-label">Visitors:</div>
+                        <div class="counter-box">0</div>
+                        <div class="counter-box">0</div>
+                        <div class="counter-box">0</div>
+                        <div class="counter-box">8</div>
+                        <div class="counter-box">4</div>
+                        <div class="counter-box">5</div>
+                    </div>
+                    
+                    <div class="best-viewed">
+                        <p>Best viewed with:</p>
+                        <img src="/api/placeholder/88/31" alt="Internet Explorer 6.0">
+                        <img src="/api/placeholder/88/31" alt="Netscape Navigator 4.0">
+                        <p>Resolution: 800x600 or higher</p>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <footer>
+                        <p align="center">&copy; 2003 Rounak Paul. All rights reserved.</p>
+                        <p align="center">Last updated: February 15, 2003</p>
+                        <p align="center"><a href="#" style="font-size: 9px;">This site is Y2K compliant!</a></p>
+                    </footer>
+                </div>
+                
+                <div class="status-bar">
+                    <div>Done</div>
+                    <div>Internet | Protected Mode: Off</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple JavaScript to show content after loading -->
+    <script>
+        // Show the main content after the loading animation finishes
+        setTimeout(function() {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.querySelector('.main-content').style.display = 'block';
+        }, 4000); // 4 seconds loading time
+    </script>
+</body>
+</html>
